@@ -1,0 +1,22 @@
+{
+  "name": "line-count",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": "0.10.x"
+  },
+  "dependencies": {
+    "express": "3.x",
+    "socket.io": "0.9.x",
+    "async": "0.2.x",
+    "buffered-reader": "1.0.x",
+    "mime": "1.2.x"
+  },
+  "devDependencies": {
+    "node-dev": "2.x"
+  },
+  "scripts": {
+    "dev": "./bin/dev-server",
+    "start": "node ./app.js"
+  }
+}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/bootstrap/docs/assets/css/bootstrap.css" type="text/css" />
+    <script src="/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="/bootstrap/docs/assets/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      $(function() {
+        'use strict';
+
+        var re = new RegExp("^.*/([^/]+)/([^/]+)/?$");
+        var match = re.exec(document.URL);
+        var user = match[1], repo = match[2];
+
+        var $githubUrl = $('#github-url');
+        var $consoleOutput = $('#console-output');
+        var $results = $('#results');
+        var socket = io.connect('http://localhost');
+
+        var githubUrl = 'https://github.com/'+user+'/'+repo;
+        $githubUrl.append($('<a href="'+githubUrl+'" target="_blank">'+githubUrl+'</a>'));
+
+        socket.on('console-output', function (data) {
+          console.log(data);
+          $consoleOutput.append($('<p>' + data + '</p>'));
+          $consoleOutput.stop().animate({
+            scrollTop: $consoleOutput[0].scrollHeight
+          }, 800);
+        });
+
+        socket.on('results', function (data) {
+          console.log(data);
+
+          // Display results as table
+          $.each(data, function(key, value) {
+            $results.append(
+              $('<tr><td>'+key+'</td><td>'+value.files+'</td><td>'+value.codeLines+'</td><td>'+value.lines+'</td></tr>')
+            );
+          });
+
+
+          $('#results-container').show();
+        });
+
+        socket.emit('get-line-count', { user: user, repo: repo });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="span8 offset2">
+          <h1 id="title">Line count for <span id="github-url"></span></h1>
+
+          <div style="padding-top: 20px;">
+            <h2>Progress</h2>
+            <div id="console-output" class="well" style="height: 150px; font-size: 0.85em; font-family: 'Lucida Console', Monaco, monospace; "></div>
+          </div>
+
+          <div id="results-container" style="display: none; padding-top: 20px;">
+            <h2>Results</h2>
+            <table id="results" class="table table-striped">
+              <tr>
+                <th>File Type</th>
+                <th>Files</th>
+                <th>Lines of Code</th>
+                <th>Total lines</th>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

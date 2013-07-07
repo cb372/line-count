@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# Start HTTP server in dev mode, so scripts are auto-reloaded when changed
+$(dirname $0)/../node_modules/.bin/node-dev $(dirname $0)/../app.js

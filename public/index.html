@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/bootstrap/docs/assets/css/bootstrap.css" type="text/css" />
+    <script src="/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="/bootstrap/docs/assets/js/bootstrap.min.js" type="text/javascript"></script>
+    <script>
+      $(function() {
+        'use strict';
+
+        // Regexp to extract user and repo from github URL.
+        // Also accepts strings of the form:
+        // "cb372/line-count"
+        // "https://github.com/cb372/line-count/foo/bar.js"
+        var re = new RegExp("^(?:https?://.*github.com/)?([^/]+)/([^/]+)/?");
+        $('form').on('submit', function() {
+          var match = re.exec($('#project-url').val());
+          // TODO show error if match failed
+          var user = match[1], repo = match[2];
+          location.href = '/' + user + '/' + repo;
+          return false;
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="span8 offset2">
+          <h1>Github project Line Counter</h1>
+          <form>
+            <label for="project-url">Github project URL</label>
+            <input id="project-url" name="project-url" class="span7" style="font-size: 1.5em; padding-left: 0.5em;" placeholder="e.g. 'https://github.com/cb372/line-count'" />    
+            <input type="submit" class="span1 btn btn-primary" value="Go!" />
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
