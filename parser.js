@@ -19,7 +19,8 @@ var codeFileTypes = {
   "c++": "C++",
   "php": "PHP",
   "pl": "Perl",
-  "js": "JavaScript"
+  "js": "JavaScript",
+  "sh": "Shell"
 };
 
 function getCodeFileType(extension) {
