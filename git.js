@@ -35,7 +35,7 @@ function deleteFolderRecursive(path) {
 }
 
 function execGitCloneCmd(gitUrl, clonePath, socket, onSuccess, onError) {
-  var proc = spawn('git', ['clone', gitUrl, clonePath]); 
+  var proc = spawn('git', ['clone', '-v', gitUrl, clonePath]); 
   var stdoutLines = proc.stdout.pipe(splitter("\n"));
   var stderrLines = proc.stderr.pipe(splitter("\n"));
   stdoutLines.encoding = "utf-8";
@@ -44,7 +44,7 @@ function execGitCloneCmd(gitUrl, clonePath, socket, onSuccess, onError) {
     socket.emit('console-output', line);
   });
   stderrLines.on("token", function(line) {
-    socket.emit('console-output', token);
+    socket.emit('console-output', line);
   });
   proc.on("close", function(code) {
     if (code != 0) {
