@@ -22,7 +22,6 @@
         $githubUrl.append($('<a href="'+githubUrl+'" target="_blank">'+githubUrl+'</a>'));
 
         socket.on('console-output', function (data) {
-          console.log(data);
           $consoleOutput.append(document.createTextNode(data)).append('<br/>');
           $consoleOutput.stop().animate({
             scrollTop: $consoleOutput[0].scrollHeight
@@ -30,15 +29,11 @@
         });
 
         socket.on('results', function (data) {
-          console.log(data);
-
-          // Display results as table
           $.each(data, function(key, value) {
             $results.append(
               $('<tr><td>'+key+'</td><td>'+value.files+'</td><td>'+value.codeLines+'</td><td>'+value.lines+'</td></tr>')
             );
           });
-
 
           $('#results-container').show();
         });
