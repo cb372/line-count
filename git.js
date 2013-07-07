@@ -17,7 +17,7 @@ function randomChars(length) {
 }
 
 function buildTmpDirPath() {
-  return os.tmpdir() + '/line-count-clone-' + randomChars(8);
+  return '/tmp/line-count-clone-' + randomChars(8);
 }
 
 function deleteFolderRecursive(path) {
