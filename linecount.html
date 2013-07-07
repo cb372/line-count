@@ -23,10 +23,10 @@
 
         socket.on('console-output', function (data) {
           console.log(data);
-          $consoleOutput.append($('<p>' + data + '</p>'));
+          $consoleOutput.append(document.createTextNode(data)).append('<br/>');
           $consoleOutput.stop().animate({
             scrollTop: $consoleOutput[0].scrollHeight
-          }, 800);
+          }, 400);
         });
 
         socket.on('results', function (data) {
@@ -55,7 +55,7 @@
 
           <div style="padding-top: 20px;">
             <h2>Progress</h2>
-            <div id="console-output" class="well" style="height: 150px; font-size: 0.85em; font-family: 'Lucida Console', Monaco, monospace; "></div>
+            <div id="console-output" class="well" style="height: 150px; overflow: scroll; font-size: 0.85em; font-family: 'Lucida Console', Monaco, monospace; "></div>
           </div>
 
           <div id="results-container" style="display: none; padding-top: 20px;">

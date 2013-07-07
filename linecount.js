@@ -33,6 +33,15 @@ function addResult(acc, newResult) {
   }
 }
 
+function getFilename(path) {
+  var lastSlash = path.lastIndexOf('/');
+  if (lastSlash > -1) {
+    return path.substring(lastSlash + 1);
+  } else {
+    return path;
+  }
+}
+
 function countLines(rootDir, socket, onComplete) {
     socket.emit("console-output", "Counting lines...");
  
@@ -43,7 +52,6 @@ function countLines(rootDir, socket, onComplete) {
     var onFileParseResult = function(fileResult) {
         addResult(results, fileResult);
         filesRemaining -= 1;
-        console.log("Files remaining after dec: " + filesRemaining);
         if (walkComplete && filesRemaining == 0) {
           // all files have been parsed, so we're done
           socket.emit("results", results);
@@ -53,7 +61,7 @@ function countLines(rootDir, socket, onComplete) {
 
     var onFile = function(path) {
       filesRemaining += 1;
-      console.log("Files remaining after inc: " + filesRemaining);
+      socket.emit("console-output", "Parsing file: " + getFilename(path));
       parser.parse(path, onFileParseResult);
     };
 

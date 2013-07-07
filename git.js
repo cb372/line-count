@@ -1,6 +1,7 @@
 var os = require('os')
   , fs = require('fs')
-  , exec = require('child_process').exec;
+  , splitter = require('stream-splitter')
+  , spawn = require('child_process').spawn;
 
 function buildGitUrl(user, repo) {
   return 'https://github.com/' + user + '/' + repo + '.git';
@@ -34,22 +35,29 @@ function deleteFolderRecursive(path) {
 }
 
 function execGitCloneCmd(gitUrl, clonePath, socket, onSuccess, onError) {
-  return exec('git clone ' + gitUrl + ' ' + clonePath, 
-      function (error, stdout, stderr) {
-        socket.emit('console-output', stdout);
-        socket.emit('console-output', stderr);
-
-        if (error && error.code) {
-          socket.emit('console-output', "ERROR: git clone failed. Exit code = " + error.code);
-          onError();
-        } else {
-          onSuccess(clonePath, socket);
-        } 
-      });
+  var proc = spawn('git', ['clone', gitUrl, clonePath]); 
+  var stdoutLines = proc.stdout.pipe(splitter("\n"));
+  var stderrLines = proc.stderr.pipe(splitter("\n"));
+  stdoutLines.encoding = "utf-8";
+  stderrLines.encoding = "utf-8";
+  stdoutLines.on("token", function(line) {
+    socket.emit('console-output', line);
+  });
+  stderrLines.on("token", function(line) {
+    socket.emit('console-output', token);
+  });
+  proc.on("close", function(code) {
+    if (code != 0) {
+      socket.emit('console-output', "ERROR: git clone failed. Exit code = " + code);
+      onError();
+    } else {
+      onSuccess(clonePath, socket);
+    } 
+  });
 }
 
 function cleanup(clonePath, socket) {
-    socket.emit("console-output", "Deleting local repo...");
+    socket.emit("console-output", "Cleaning up...");
     deleteFolderRecursive(clonePath);
 };
     
