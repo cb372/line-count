@@ -16,7 +16,7 @@
         var $githubUrl = $('#github-url');
         var $consoleOutput = $('#console-output');
         var $results = $('#results');
-        var socket = io.connect('http://localhost');
+        var socket = io.connect('http://' + location.host);
 
         var githubUrl = 'https://github.com/'+user+'/'+repo;
         $githubUrl.append($('<a href="'+githubUrl+'" target="_blank">'+githubUrl+'</a>'));
