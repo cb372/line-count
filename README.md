@@ -6,9 +6,13 @@ Built with node.js + Socket.IO.
 
 # Demo
 
-Will be running here until my Engine Yard free trail runs out!
+<del>
+Will be running here until my Engine Yard free trial runs out!
 
 http://ec2-184-72-230-161.compute-1.amazonaws.com
+</del>
+
+Free trial ran out :( We'll have to wait until Heroku supports WebSockets...
 
 # Notes
 
