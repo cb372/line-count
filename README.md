@@ -2,17 +2,11 @@
 
 A service for calculating line counts of GitHub-hosted projects.
 
-Built with node.js + Socket.IO.
+Built with node.js + Server-Sent Events.
 
 # Demo
 
-<del>
-Will be running here until my Engine Yard free trial runs out!
-
-http://ec2-184-72-230-161.compute-1.amazonaws.com
-</del>
-
-Free trial ran out :( We'll have to wait until Heroku supports WebSockets...
+http://line-count.herokuapp.com/
 
 # Notes
 
