@@ -4,7 +4,6 @@
     <link rel="stylesheet" href="/bootstrap/docs/assets/css/bootstrap.css" type="text/css" />
     <script src="/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="/bootstrap/docs/assets/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="/socket.io/socket.io.js"></script>
     <script>
       $(function() {
         'use strict';
@@ -16,19 +15,23 @@
         var $githubUrl = $('#github-url');
         var $consoleOutput = $('#console-output');
         var $results = $('#results');
-        var socket = io.connect('http://' + location.host);
 
         var githubUrl = 'https://github.com/'+user+'/'+repo;
         $githubUrl.append($('<a href="'+githubUrl+'" target="_blank">'+githubUrl+'</a>'));
 
-        socket.on('console-output', function (data) {
+        var eventSourceUrl = '/' + user + '/' + repo + '/' + Math.floor(Math.random() * 10000000);
+        var source = new EventSource(eventSourceUrl);
+
+        source.addEventListener('console-output', function(e) {
+          var data = JSON.parse(e.data)
           $consoleOutput.append(document.createTextNode(data)).append('<br/>');
           $consoleOutput.stop().animate({
             scrollTop: $consoleOutput[0].scrollHeight
           }, 400);
-        });
+        }, false);
 
-        socket.on('results', function (data) {
+        source.addEventListener('results', function(e) {
+          var data = JSON.parse(e.data)
           $.each(data, function(key, value) {
             $results.append(
               $('<tr><td>'+key+'</td><td>'+value.files+'</td><td>'+value.codeLines+'</td><td>'+value.lines+'</td></tr>')
@@ -36,9 +39,7 @@
           });
 
           $('#results-container').show();
-        });
-
-        socket.emit('get-line-count', { user: user, repo: repo });
+        }, false);
       });
     </script>
   </head>

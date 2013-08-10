@@ -1,8 +1,8 @@
 var express = require('express')
   , app = express()
   , server = require('http').createServer(app)
-  , io = require('socket.io').listen(server)
   , git = require('./git')
+  , sseSocket = require('./ssesocket')
   , linecount = require('./linecount');
 
 server.listen(process.env.PORT || 8080);
@@ -14,8 +14,7 @@ app.get('/:user/:repo', function(req, res) {
   res.sendfile(__dirname + '/linecount.html');
 });
 
-io.sockets.on('connection', function (socket) {
-  socket.on('get-line-count', function (data) {
-    git.cloneRepo(data.user, data.repo, socket, linecount.countLinesBuilder);
-  });
+app.get('/:user/:repo/*', function(req, res) {
+  var socket = new sseSocket(req, res);
+  git.cloneRepo(req.params.user, req.params.repo, socket, linecount.countLinesBuilder);
 });
