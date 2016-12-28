@@ -20,7 +20,16 @@ var codeFileTypes = {
   "php": "PHP",
   "pl": "Perl",
   "js": "JavaScript",
-  "sh": "Shell"
+  "sh": "Shell",
+  "cs": "CSharp",
+  "fs": "FSharp",
+  "vb": "Visual Basic",
+  "py": "Python",
+  "bat": "Batch",
+  "html": "Html",
+  "css": "Stylesheets",
+  "xml": "Xml",
+  "json": "Json"
 };
 
 function getCodeFileType(extension) {
