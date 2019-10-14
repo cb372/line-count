@@ -20,6 +20,7 @@ var codeFileTypes = {
   "php": "PHP",
   "pl": "Perl",
   "js": "JavaScript",
+  "ts": "TypeScript",
   "sh": "Shell",
   "cs": "CSharp",
   "fs": "FSharp",
