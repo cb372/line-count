@@ -10,7 +10,7 @@
     "async": "0.2.x",
     "buffered-reader": "1.0.x",
     "stream-splitter": "0.2.x",
-    "mime": "1.2.x"
+    "mime": "2.4.x"
   },
   "devDependencies": {
     "node-dev": "2.x"
